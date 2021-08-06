@@ -1,23 +1,35 @@
-import logo from './logo.svg';
+
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
+import socketIOClient from 'socket.io-client'
+
+import ChatHome from './ChatHome';
+import Chat from './Chat';
+
+import SocketContext from './Context/SocketContext';
+
+
 import './App.css';
+
+const ENDPOINT ="http://localhost:3001";
+
+const socket = socketIOClient(ENDPOINT)
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SocketContext.Provider value={socket}>
+      <Router>
+        <Switch>
+            <Route exact path="/" component={ChatHome}>
+
+            </Route>
+            <Route  path="/chat" component={Chat}>
+
+            </Route>
+        </Switch>
+      </Router>
+      </SocketContext.Provider>
     </div>
   );
 }
